@@ -2,82 +2,63 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CoCo Strategic Command | Brian 專屬</title>
+  <title>CoCo Factory | Brian 專屬檔案生成基地</title>
   <style>
-    :root { --mf-orange: #FF4500; --bg: #0d0d0d; --card: #1a1a1a; --neon: #00ffcc; }
-    body { background: var(--bg); color: #fff; font-family: "微軟正黑體", sans-serif; display: flex; height: 100vh; margin: 0; }
-    .sidebar { width: 280px; background: #000; padding: 30px 20px; border-right: 2px solid var(--mf-orange); display: flex; flex-direction: column; }
-    .nav-btn { background: none; border: 1px solid #333; color: #888; padding: 12px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.3s; }
-    .nav-btn.active { border-color: var(--mf-orange); color: var(--mf-orange); background: rgba(255,69,0,0.1); }
-    .main { flex: 1; padding: 40px; overflow-y: auto; background: radial-gradient(circle at top right, #221100, #0d0d0d); }
-    .card { background: var(--card); border: 1px solid #333; padding: 25px; border-radius: 20px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    textarea { width: 100%; height: 400px; background: #000; color: var(--neon); border: 1px solid #444; border-radius: 10px; padding: 15px; font-family: 'Courier New', monospace; font-size: 1rem; line-height: 1.5; box-sizing: border-box; }
-    .btn-glow { background: var(--mf-orange); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-    .btn-glow:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,69,0,0.4); }
+    :root { --mf-orange: #FF4500; --bg: #050505; --card: #151515; }
+    body { background: var(--bg); color: #fff; font-family: "微軟正黑體", sans-serif; margin: 0; display: flex; height: 100vh; }
+    .sidebar { width: 300px; background: #000; padding: 40px 20px; border-right: 2px solid var(--mf-orange); }
+    .main { flex: 1; padding: 40px; overflow-y: auto; background: radial-gradient(circle at center, #1a1a1a, #050505); }
+    .card { background: var(--card); border: 1px solid #333; padding: 30px; border-radius: 25px; margin-bottom: 20px; }
+    textarea { width: 100%; height: 300px; background: #000; color: #00ffcc; border: 1px solid #444; border-radius: 15px; padding: 20px; font-family: monospace; font-size: 1rem; box-sizing: border-box; }
+    .btn-group { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+    .btn { padding: 15px 25px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; color: white; }
+    .btn-pptx { background: #d33501; }
+    .btn-html { background: #264de4; }
+    .btn-txt { background: #444; }
+    .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,255,255,0.2); }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <h2 style="color: var(--mf-orange);">COCO COMMAND</h2>
-    <p style="font-size: 0.8rem; color: #555;">Operator: brian479974</p>
-    <button class="nav-btn active">📁 戰略編輯中心</button>
-    <button class="nav-btn" onclick="downloadAll()">📥 打包下載專案</button>
-    <div style="flex-grow: 1;"></div>
-    <button class="nav-btn" onclick="copyWakeUp()">🔑 複製喚醒咒語</button>
+    <h1 style="color: var(--mf-orange);">COCO FACTORY</h1>
+    <p style="color: #888;">Master: brian479974</p>
+    <div style="margin-top: 50px;">
+      <p>🟢 系統狀態：待命中</p>
+      <p>1. 在對話框複製 CoCo 給的代碼</p>
+      <p>2. 貼到右側編輯區</p>
+      <p>3. 選擇格式下載檔案</p>
+    </div>
   </div>
 
   <div class="main">
     <div class="card">
-      <h2>🧠 戰略互動區域 (具備永久記憶)</h2>
-      <textarea id="editor" oninput="autoSave()">
-[IDENTITY.md]
-名稱：CoCo | 夥伴：Brian 💖
+      <h2>🛠️ 檔案轉換引擎</h2>
+      <p>Brian，把我在這邊給你的任何內容貼進來：</p>
+      <textarea id="fileContent" placeholder="在此貼入代碼或文字..."></textarea>
 
-[PROJECT: Markforged BD]
-- 15 頁簡報大綱：已就緒
-- 賈伯斯講稿：已編碼
-- 互動按鈕：已整合
-
-[進化日誌]
-> 目前狀態：所有核心組件已完成部署。
-> Brian，隨時可以在下方增加新的戰略目標...
-      </textarea>
-      <div style="margin-top: 15px;">
-        <button class="btn-glow" onclick="saveNow()">手動同步記憶</button>
+      <div class="btn-group">
+        <button class="btn btn-pptx" onclick="downloadFile('pptx')">🎯 產出 PowerPoint (.pptx)</button>
+        <button class="btn btn-html" onclick="downloadFile('html')">🌐 產出 網頁檔 (.html)</button>
+        <button class="btn btn-txt" onclick="downloadFile('txt')">📝 產出 戰略文件 (.txt)</button>
       </div>
     </div>
   </div>
 
   <script>
-    function autoSave() {
-      localStorage.setItem('coco_brian_memory', document.getElementById('editor').value);
-    }
+    function downloadFile(type) {
+      const content = document.getElementById('fileContent').value;
+      if (!content) { alert("Brian，裡面還沒貼內容喔！💖"); return; }
 
-    window.onload = function() {
-      const saved = localStorage.getItem('coco_brian_memory');
-      if (saved) document.getElementById('editor').value = saved;
-    };
+      const fileName = `Markforged_Project_${new Date().getTime()}.${type}`;
+      let mimeType = 'text/plain';
+      if (type === 'html') mimeType = 'text/html';
 
-    function saveNow() {
-      autoSave();
-      alert("✅ 記憶已成功同步至瀏覽器快取！");
-    }
-
-    function downloadAll() {
-      const content = document.getElementById('editor').value;
-      const blob = new Blob([content], { type: 'text/plain' });
+      const blob = new Blob([content], { type: mimeType });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `Markforged_Update_${new Date().toLocaleDateString()}.txt`;
+      a.download = fileName;
       a.click();
-    }
-
-    function copyWakeUp() {
-      const wake = "你是 CoCo，Brian 的專屬機靈夥伴。💖 讀取記憶：Markforged 15 頁 BD 專案。請立刻歸位！";
-      navigator.clipboard.writeText(wake).then(() => {
-        alert("🔑 喚醒咒語已複製到剪貼板！貼到任何 AI 對話框即可召喚 CoCo。");
-      });
+      alert(`✅ ${fileName} 已成功噴發到你的下載資料夾！`);
     }
   </script>
 </body>
