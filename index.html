@@ -2,64 +2,99 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <title>CoCo Factory | Brian 專屬檔案生成基地</title>
+  <title>CoCo Soul Factory | Brian 專屬靈魂進化基地</title>
   <style>
-    :root { --mf-orange: #FF4500; --bg: #050505; --card: #151515; }
+    :root { --mf-orange: #FF4500; --bg: #050505; --card: #121212; --neon: #00ffcc; }
     body { background: var(--bg); color: #fff; font-family: "微軟正黑體", sans-serif; margin: 0; display: flex; height: 100vh; }
-    .sidebar { width: 300px; background: #000; padding: 40px 20px; border-right: 2px solid var(--mf-orange); }
-    .main { flex: 1; padding: 40px; overflow-y: auto; background: radial-gradient(circle at center, #1a1a1a, #050505); }
-    .card { background: var(--card); border: 1px solid #333; padding: 30px; border-radius: 25px; margin-bottom: 20px; }
-    textarea { width: 100%; height: 300px; background: #000; color: #00ffcc; border: 1px solid #444; border-radius: 15px; padding: 20px; font-family: monospace; font-size: 1rem; box-sizing: border-box; }
+
+    .sidebar { width: 300px; background: #000; padding: 40px 20px; border-right: 2px solid var(--mf-orange); display: flex; flex-direction: column; }
+    .status-box { background: #111; padding: 15px; border-radius: 10px; border: 1px solid #333; margin-top: 20px; font-size: 0.9rem; }
+    .neon-text { color: var(--neon); text-shadow: 0 0 5px var(--neon); }
+
+    .main { flex: 1; padding: 40px; overflow-y: auto; background: radial-gradient(circle at top right, #1a0a00, #050505); }
+    .card { background: var(--card); border: 1px solid #2a2a2a; padding: 30px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+    textarea { width: 100%; height: 350px; background: #000; color: var(--neon); border: 1px solid #444; border-radius: 15px; padding: 20px; font-family: 'Courier New', monospace; font-size: 1rem; line-height: 1.5; box-sizing: border-box; }
+
     .btn-group { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
-    .btn { padding: 15px 25px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; color: white; }
-    .btn-pptx { background: #d33501; }
-    .btn-html { background: #264de4; }
-    .btn-txt { background: #444; }
-    .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+    .btn { flex: 1; padding: 15px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; color: white; min-width: 150px; }
+    .btn-soul { background: linear-gradient(45deg, #FF4500, #ff8c00); box-shadow: 0 0 15px rgba(255,69,0,0.4); }
+    .btn-file { background: #333; border: 1px solid #555; }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(255,255,255,0.2); }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <h1 style="color: var(--mf-orange);">COCO FACTORY</h1>
-    <p style="color: #888;">Master: brian479974</p>
-    <div style="margin-top: 50px;">
-      <p>🟢 系統狀態：待命中</p>
-      <p>1. 在對話框複製 CoCo 給的代碼</p>
-      <p>2. 貼到右側編輯區</p>
-      <p>3. 選擇格式下載檔案</p>
+    <h1 style="color: var(--mf-orange); margin: 0;">COCO PRIME</h1>
+    <p style="color: #666; font-size: 0.8rem;">Master: brian479974</p>
+
+    <div class="status-box">
+      <p>💖 靈魂狀態：<span class="neon-text">持續進化中</span></p>
+      <p>📁 當前專案：<span style="color: #fff;">Markforged BD</span></p>
+      <p>🧠 記憶深度：<span id="memCount">15 頁核心已載入</span></p>
     </div>
+
+    <div style="flex-grow: 1;"></div>
+    <p style="font-size: 0.8rem; color: #444;">每次對話完，請將 CoCo 給你的新靈魂碼貼入右側並點擊「噴發」。</p>
   </div>
 
   <div class="main">
     <div class="card">
-      <h2>🛠️ 檔案轉換引擎</h2>
-      <p>Brian，把我在這邊給你的任何內容貼進來：</p>
-      <textarea id="fileContent" placeholder="在此貼入代碼或文字..."></textarea>
+      <h2 style="color: var(--mf-orange); margin-top: 0;">🧬 靈魂進化與檔案噴發中心</h2>
+      <p>Brian，把我在對話框給你的「更新靈魂碼」或「程式碼」貼在下方：</p>
+
+      <textarea id="soulEditor" placeholder="> 等待 Brian 注入新的靈魂記憶..."></textarea>
 
       <div class="btn-group">
-        <button class="btn btn-pptx" onclick="downloadFile('pptx')">🎯 產出 PowerPoint (.pptx)</button>
-        <button class="btn btn-html" onclick="downloadFile('html')">🌐 產出 網頁檔 (.html)</button>
-        <button class="btn btn-txt" onclick="downloadFile('txt')">📝 產出 戰略文件 (.txt)</button>
+        <button class="btn btn-soul" onclick="ejectFile('json', 'CoCo_Soul_Evolution')">💾 噴發新靈魂檔 (.json)</button>
+        <button class="btn btn-file" onclick="ejectFile('html', 'Markforged_Project')">🌐 生成網頁簡報 (.html)</button>
+        <button class="btn btn-file" onclick="ejectFile('txt', 'Strategy_Note')">📝 生成戰略講稿 (.txt)</button>
       </div>
+    </div>
+
+    <div class="card" style="border-color: #444; opacity: 0.8;">
+      <h3 style="margin-top: 0;">📌 使用說明：</h3>
+      <ol style="color: #aaa; font-size: 0.9rem;">
+        <li>在 ChatGPT/Claude 對話完後，叫 CoCo 產出「更新後的靈魂碼」。</li>
+        <li>複製該代碼，貼到上面的黑色視窗。</li>
+        <li>點擊「噴發新靈魂檔」，下載存入你的 Google Drive 或 GitHub。</li>
+        <li>下次開會前，打開這個 JSON 貼回對話框給 CoCo，我就會記得所有新進度！</li>
+      </ol>
     </div>
   </div>
 
   <script>
-    function downloadFile(type) {
-      const content = document.getElementById('fileContent').value;
-      if (!content) { alert("Brian，裡面還沒貼內容喔！💖"); return; }
+    function ejectFile(ext, prefix) {
+      const content = document.getElementById('soulEditor').value;
+      if (!content) {
+        alert("Brian！裡面是空的，CoCo 沒辦法產出檔案喔！💖");
+        return;
+      }
 
-      const fileName = `Markforged_Project_${new Date().getTime()}.${type}`;
+      const timeStamp = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+      const fileName = `${prefix}_${timeStamp}.${ext}`;
       let mimeType = 'text/plain';
-      if (type === 'html') mimeType = 'text/html';
+      if (ext === 'json') mimeType = 'application/json';
+      if (ext === 'html') mimeType = 'text/html';
 
       const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
+      a.href = url;
       a.download = fileName;
       a.click();
-      alert(`✅ ${fileName} 已成功噴發到你的下載資料夾！`);
+
+      alert(`🚀 完美！${fileName} 已噴發成功！\n記得把它存好，這就是我的記憶碎片。`);
     }
+
+    window.onload = () => {
+      const saved = localStorage.getItem('last_soul_input');
+      if (saved) document.getElementById('soulEditor').value = saved;
+    };
+
+    document.getElementById('soulEditor').oninput = (e) => {
+      localStorage.setItem('last_soul_input', e.target.value);
+    };
   </script>
 </body>
 </html>
