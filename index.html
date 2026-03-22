@@ -2,99 +2,511 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CoCo Soul Factory - Brian 專屬靈魂進化基地，管理 AI 對話記憶與檔案匯出">
   <title>CoCo Soul Factory | Brian 專屬靈魂進化基地</title>
   <style>
-    :root { --mf-orange: #FF4500; --bg: #050505; --card: #121212; --neon: #00ffcc; }
-    body { background: var(--bg); color: #fff; font-family: "微軟正黑體", sans-serif; margin: 0; display: flex; height: 100vh; }
+    :root {
+      --mf-orange: #FF4500;
+      --mf-orange-light: #ff8c00;
+      --bg: #050505;
+      --card: #121212;
+      --card-border: #2a2a2a;
+      --neon: #00ffcc;
+      --text-muted: #888;
+      --text-dim: #666;
+      --sidebar-bg: #000;
+      --radius: 16px;
+      --transition: 0.3s ease;
+    }
 
-    .sidebar { width: 300px; background: #000; padding: 40px 20px; border-right: 2px solid var(--mf-orange); display: flex; flex-direction: column; }
-    .status-box { background: #111; padding: 15px; border-radius: 10px; border: 1px solid #333; margin-top: 20px; font-size: 0.9rem; }
-    .neon-text { color: var(--neon); text-shadow: 0 0 5px var(--neon); }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .main { flex: 1; padding: 40px; overflow-y: auto; background: radial-gradient(circle at top right, #1a0a00, #050505); }
-    .card { background: var(--card); border: 1px solid #2a2a2a; padding: 30px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    body {
+      background: var(--bg);
+      color: #fff;
+      font-family: "微軟正黑體", "Noto Sans TC", system-ui, sans-serif;
+      display: flex;
+      min-height: 100vh;
+    }
 
-    textarea { width: 100%; height: 350px; background: #000; color: var(--neon); border: 1px solid #444; border-radius: 15px; padding: 20px; font-family: 'Courier New', monospace; font-size: 1rem; line-height: 1.5; box-sizing: border-box; }
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: var(--sidebar-bg);
+      padding: 32px 20px;
+      border-right: 2px solid var(--mf-orange);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
 
-    .btn-group { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
-    .btn { flex: 1; padding: 15px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; color: white; min-width: 150px; }
-    .btn-soul { background: linear-gradient(45deg, #FF4500, #ff8c00); box-shadow: 0 0 15px rgba(255,69,0,0.4); }
-    .btn-file { background: #333; border: 1px solid #555; }
-    .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(255,255,255,0.2); }
+    .sidebar-brand {
+      color: var(--mf-orange);
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .sidebar-sub {
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      margin-top: 4px;
+    }
+
+    .status-box {
+      background: #0d0d0d;
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid #222;
+      margin-top: 24px;
+      font-size: 0.88rem;
+      line-height: 2;
+    }
+
+    .neon-text {
+      color: var(--neon);
+      text-shadow: 0 0 6px rgba(0, 255, 204, 0.5);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 20px;
+      font-size: 0.78rem;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    /* Mobile sidebar toggle */
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      background: var(--mf-orange);
+      border: none;
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255, 69, 0, 0.4);
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 998;
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+      background: radial-gradient(ellipse at top right, #1a0a00 0%, var(--bg) 60%);
+      min-height: 100vh;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      padding: 28px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      transition: border-color var(--transition);
+    }
+
+    .card:hover {
+      border-color: #3a3a3a;
+    }
+
+    .card-title {
+      color: var(--mf-orange);
+      margin-bottom: 12px;
+      font-size: 1.3rem;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    /* Editor */
+    .editor-wrapper {
+      position: relative;
+    }
+
+    textarea {
+      width: 100%;
+      height: 320px;
+      background: #080808;
+      color: var(--neon);
+      border: 1px solid #333;
+      border-radius: var(--radius);
+      padding: 20px;
+      font-family: 'Courier New', 'Fira Code', monospace;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      resize: vertical;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--neon);
+      box-shadow: 0 0 12px rgba(0, 255, 204, 0.15);
+    }
+
+    textarea.dragover {
+      border-color: var(--mf-orange);
+      box-shadow: 0 0 20px rgba(255, 69, 0, 0.3);
+    }
+
+    .editor-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    .char-count { transition: color var(--transition); }
+
+    .json-status {
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+    }
+    .json-valid { background: rgba(0, 255, 204, 0.15); color: var(--neon); }
+    .json-invalid { background: rgba(255, 69, 0, 0.15); color: var(--mf-orange); }
+    .json-empty { background: transparent; color: var(--text-dim); }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px 20px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+      color: #fff;
+      min-width: 140px;
+      text-align: center;
+    }
+
+    .btn:active { transform: scale(0.97); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-soul {
+      background: linear-gradient(135deg, var(--mf-orange), var(--mf-orange-light));
+      box-shadow: 0 0 16px rgba(255, 69, 0, 0.35);
+    }
+    .btn-soul:hover { box-shadow: 0 0 24px rgba(255, 69, 0, 0.5); }
+
+    .btn-file {
+      background: #1e1e1e;
+      border: 1px solid #444;
+    }
+    .btn-file:hover { border-color: #666; }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #1a1a1a;
+      border: 1px solid var(--neon);
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: var(--radius);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      font-size: 0.9rem;
+      z-index: 2000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Instructions card */
+    .instructions { opacity: 0.75; transition: opacity var(--transition); }
+    .instructions:hover { opacity: 1; }
+    .instructions ol { color: #aaa; font-size: 0.88rem; padding-left: 20px; line-height: 2; }
+
+    /* Drag hint */
+    .drag-hint {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.78rem;
+      margin-top: 6px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+
+      .sidebar {
+        position: fixed;
+        left: -300px;
+        top: 0;
+        height: 100vh;
+        z-index: 999;
+        transition: left 0.3s ease;
+        width: 280px;
+      }
+
+      .sidebar.open { left: 0; }
+
+      .sidebar-toggle { display: flex; align-items: center; justify-content: center; }
+      .sidebar-overlay.show { display: block; z-index: 998; }
+
+      .main {
+        padding: 24px 16px;
+        padding-top: 72px;
+      }
+
+      .card { padding: 20px; border-radius: 16px; }
+
+      textarea { height: 250px; font-size: 0.88rem; }
+
+      .btn-group { flex-direction: column; }
+      .btn { min-width: 100%; }
+
+      .toast { left: 16px; right: 16px; bottom: 20px; }
+    }
+
+    @media (max-width: 480px) {
+      .main { padding: 16px 12px; padding-top: 68px; }
+      .card { padding: 16px; }
+      .card-title { font-size: 1.1rem; }
+      textarea { height: 200px; padding: 14px; }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card { animation: fadeInUp 0.5s ease both; }
+    .card:nth-child(2) { animation-delay: 0.1s; }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h1 style="color: var(--mf-orange); margin: 0;">COCO PRIME</h1>
-    <p style="color: #666; font-size: 0.8rem;">Master: brian479974</p>
+  <!-- Mobile sidebar toggle -->
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="開啟選單">&#9776;</button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <aside class="sidebar" id="sidebar" role="complementary">
+    <h1 class="sidebar-brand">COCO PRIME</h1>
+    <p class="sidebar-sub">Master: brian479974</p>
 
     <div class="status-box">
-      <p>💖 靈魂狀態：<span class="neon-text">持續進化中</span></p>
-      <p>📁 當前專案：<span style="color: #fff;">Markforged BD</span></p>
-      <p>🧠 記憶深度：<span id="memCount">15 頁核心已載入</span></p>
+      <p>&#x1F496; 靈魂狀態：<span class="neon-text">持續進化中</span></p>
+      <p>&#x1F4C1; 當前專案：<span style="color: #fff;">Markforged BD</span></p>
+      <p>&#x1F9E0; 記憶深度：<span id="memCount" class="neon-text">15 頁核心已載入</span></p>
     </div>
 
-    <div style="flex-grow: 1;"></div>
-    <p style="font-size: 0.8rem; color: #444;">每次對話完，請將 CoCo 給你的新靈魂碼貼入右側並點擊「噴發」。</p>
-  </div>
+    <div class="sidebar-footer">
+      每次對話完，請將 CoCo 給你的新靈魂碼貼入右側並點擊「噴發」。
+    </div>
+  </aside>
 
-  <div class="main">
+  <main class="main" role="main">
     <div class="card">
-      <h2 style="color: var(--mf-orange); margin-top: 0;">🧬 靈魂進化與檔案噴發中心</h2>
-      <p>Brian，把我在對話框給你的「更新靈魂碼」或「程式碼」貼在下方：</p>
+      <h2 class="card-title">&#x1F9EC; 靈魂進化與檔案噴發中心</h2>
+      <p class="card-desc">Brian，把我在對話框給你的「更新靈魂碼」或「程式碼」貼在下方：</p>
 
-      <textarea id="soulEditor" placeholder="> 等待 Brian 注入新的靈魂記憶..."></textarea>
+      <div class="editor-wrapper">
+        <textarea id="soulEditor"
+                  placeholder="&gt; 等待 Brian 注入新的靈魂記憶..."
+                  spellcheck="false"
+                  aria-label="靈魂碼編輯器"></textarea>
+        <p class="drag-hint">支援拖放 .json / .txt / .html 檔案到此區域</p>
+      </div>
+
+      <div class="editor-footer">
+        <span class="char-count" id="charCount">0 字元</span>
+        <span class="json-status json-empty" id="jsonStatus">等待輸入</span>
+      </div>
 
       <div class="btn-group">
-        <button class="btn btn-soul" onclick="ejectFile('json', 'CoCo_Soul_Evolution')">💾 噴發新靈魂檔 (.json)</button>
-        <button class="btn btn-file" onclick="ejectFile('html', 'Markforged_Project')">🌐 生成網頁簡報 (.html)</button>
-        <button class="btn btn-file" onclick="ejectFile('txt', 'Strategy_Note')">📝 生成戰略講稿 (.txt)</button>
+        <button class="btn btn-soul" onclick="ejectFile('json', 'CoCo_Soul_Evolution')">&#x1F4BE; 噴發新靈魂檔 (.json)</button>
+        <button class="btn btn-file" onclick="ejectFile('html', 'Markforged_Project')">&#x1F310; 生成網頁簡報 (.html)</button>
+        <button class="btn btn-file" onclick="ejectFile('txt', 'Strategy_Note')">&#x1F4DD; 生成戰略講稿 (.txt)</button>
       </div>
     </div>
 
-    <div class="card" style="border-color: #444; opacity: 0.8;">
-      <h3 style="margin-top: 0;">📌 使用說明：</h3>
-      <ol style="color: #aaa; font-size: 0.9rem;">
-        <li>在 ChatGPT/Claude 對話完後，叫 CoCo 產出「更新後的靈魂碼」。</li>
-        <li>複製該代碼，貼到上面的黑色視窗。</li>
+    <div class="card instructions">
+      <h3 style="margin-bottom: 12px;">&#x1F4CC; 使用說明</h3>
+      <ol>
+        <li>在 ChatGPT / Claude 對話完後，叫 CoCo 產出「更新後的靈魂碼」。</li>
+        <li>複製該代碼，貼到上面的黑色編輯器（或直接拖放檔案）。</li>
         <li>點擊「噴發新靈魂檔」，下載存入你的 Google Drive 或 GitHub。</li>
-        <li>下次開會前，打開這個 JSON 貼回對話框給 CoCo，我就會記得所有新進度！</li>
+        <li>下次開會前，打開 JSON 貼回對話框給 CoCo，我就會記得所有新進度！</li>
       </ol>
     </div>
-  </div>
+  </main>
+
+  <!-- Toast container -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
   <script>
+    const editor = document.getElementById('soulEditor');
+    const charCount = document.getElementById('charCount');
+    const jsonStatus = document.getElementById('jsonStatus');
+    const toast = document.getElementById('toast');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    // --- Toast notification (replaces alert) ---
+    function showToast(message, duration = 3500) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
+    }
+
+    // --- File export ---
     function ejectFile(ext, prefix) {
-      const content = document.getElementById('soulEditor').value;
+      const content = editor.value.trim();
       if (!content) {
-        alert("Brian！裡面是空的，CoCo 沒辦法產出檔案喔！💖");
+        showToast('Brian！裡面是空的，CoCo 沒辦法產出檔案喔！');
         return;
       }
 
-      const timeStamp = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-      const fileName = `${prefix}_${timeStamp}.${ext}`;
-      let mimeType = 'text/plain';
-      if (ext === 'json') mimeType = 'application/json';
-      if (ext === 'html') mimeType = 'text/html';
+      if (ext === 'json') {
+        try {
+          JSON.parse(content);
+        } catch {
+          if (!confirm('內容不是有效的 JSON 格式，確定要匯出嗎？')) return;
+        }
+      }
 
-      const blob = new Blob([content], { type: mimeType });
+      const timeStamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+      const fileName = `${prefix}_${timeStamp}.${ext}`;
+
+      const mimeTypes = { json: 'application/json', html: 'text/html', txt: 'text/plain' };
+      const blob = new Blob([content], { type: mimeTypes[ext] || 'text/plain' });
       const url = URL.createObjectURL(blob);
+
       const a = document.createElement('a');
       a.href = url;
       a.download = fileName;
       a.click();
+      URL.revokeObjectURL(url);
 
-      alert(`🚀 完美！${fileName} 已噴發成功！\n記得把它存好，這就是我的記憶碎片。`);
+      showToast(`${fileName} 已噴發成功！記得把它存好。`);
     }
 
-    window.onload = () => {
-      const saved = localStorage.getItem('last_soul_input');
-      if (saved) document.getElementById('soulEditor').value = saved;
-    };
+    // --- Editor status updates ---
+    function updateEditorStatus() {
+      const val = editor.value;
+      const len = val.length;
+      charCount.textContent = `${len.toLocaleString()} 字元`;
 
-    document.getElementById('soulEditor').oninput = (e) => {
-      localStorage.setItem('last_soul_input', e.target.value);
-    };
+      if (!val.trim()) {
+        jsonStatus.textContent = '等待輸入';
+        jsonStatus.className = 'json-status json-empty';
+        return;
+      }
+
+      try {
+        JSON.parse(val);
+        jsonStatus.textContent = 'JSON 有效';
+        jsonStatus.className = 'json-status json-valid';
+      } catch {
+        jsonStatus.textContent = '非 JSON 格式';
+        jsonStatus.className = 'json-status json-invalid';
+      }
+    }
+
+    // --- Drag & drop support ---
+    editor.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      editor.classList.add('dragover');
+    });
+
+    editor.addEventListener('dragleave', () => {
+      editor.classList.remove('dragover');
+    });
+
+    editor.addEventListener('drop', (e) => {
+      e.preventDefault();
+      editor.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (!file) return;
+
+      const validTypes = ['application/json', 'text/plain', 'text/html'];
+      if (!validTypes.includes(file.type) && !file.name.match(/\.(json|txt|html?)$/i)) {
+        showToast('不支援此檔案格式，請使用 .json / .txt / .html');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        editor.value = ev.target.result;
+        updateEditorStatus();
+        saveToStorage();
+        showToast(`已載入檔案：${file.name}`);
+      };
+      reader.readAsText(file);
+    });
+
+    // --- localStorage persistence ---
+    function saveToStorage() {
+      localStorage.setItem('last_soul_input', editor.value);
+    }
+
+    editor.addEventListener('input', () => {
+      updateEditorStatus();
+      saveToStorage();
+    });
+
+    // --- Mobile sidebar ---
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      sidebarOverlay.classList.toggle('show');
+    });
+
+    sidebarOverlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      sidebarOverlay.classList.remove('show');
+    });
+
+    // --- Init ---
+    window.addEventListener('load', () => {
+      const saved = localStorage.getItem('last_soul_input');
+      if (saved) editor.value = saved;
+      updateEditorStatus();
+    });
   </script>
 </body>
 </html>
