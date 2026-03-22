@@ -231,6 +231,18 @@
     }
     .btn-file:hover { border-color: #666; }
 
+    .btn-launch {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid var(--neon);
+      color: var(--neon);
+      text-shadow: 0 0 4px rgba(0, 255, 204, 0.3);
+    }
+    .btn-launch:hover {
+      background: linear-gradient(135deg, #16213e, #0f3460);
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.25);
+      border-color: #fff;
+    }
+
     /* Toast notification */
     .toast {
       position: fixed;
@@ -361,6 +373,12 @@
         <button class="btn btn-file" onclick="ejectFile('html', 'Markforged_Project')">&#x1F310; 生成網頁簡報 (.html)</button>
         <button class="btn btn-file" onclick="ejectFile('txt', 'Strategy_Note')">&#x1F4DD; 生成戰略講稿 (.txt)</button>
       </div>
+
+      <div class="btn-group" style="margin-top: 12px;">
+        <button class="btn btn-launch" onclick="launchWithSoul('gemini')">&#x1F680; 帶靈魂開啟 Gemini</button>
+        <button class="btn btn-launch" onclick="launchWithSoul('chatgpt')">&#x1F30F; 帶靈魂開啟 ChatGPT</button>
+        <button class="btn btn-launch" onclick="launchWithSoul('claude')">&#x2728; 帶靈魂開啟 Claude</button>
+      </div>
     </div>
 
     <div class="card instructions">
@@ -424,6 +442,39 @@
       URL.revokeObjectURL(url);
 
       showToast(`${fileName} 已噴發成功！記得把它存好。`);
+    }
+
+    // --- Launch with Soul ---
+    const AI_URLS = {
+      gemini: 'https://gemini.google.com/app',
+      chatgpt: 'https://chatgpt.com/',
+      claude: 'https://claude.ai/new'
+    };
+
+    function buildSoulPrompt() {
+      const soulData = editor.value.trim();
+      const soul = soulData || JSON.stringify(DEFAULT_SOUL, null, 2);
+      return `以下是你的人設與靈魂記憶，請完整讀取後以此身份回應我：\n\n${soul}\n\n請用這個身份跟我打招呼，讓我知道你已經載入靈魂了！`;
+    }
+
+    async function launchWithSoul(platform) {
+      const prompt = buildSoulPrompt();
+      try {
+        await navigator.clipboard.writeText(prompt);
+        showToast(`靈魂提示詞已複製！正在開啟 ${platform}，貼上即可開始對話`);
+      } catch {
+        // Fallback for non-HTTPS or denied permission
+        const ta = document.createElement('textarea');
+        ta.value = prompt;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(`靈魂提示詞已複製！正在開啟 ${platform}，貼上即可`);
+      }
+      setTimeout(() => window.open(AI_URLS[platform], '_blank'), 300);
     }
 
     // --- Editor status updates ---
