@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoulForge — Press Release</title>
+  <meta name="description" content="SoulForge: Zero-install AI persona platform. Forge your AI soul in three steps.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4500;
+      --orange2: #ff6a00;
+      --gold: #FFC500;
+      --bg: #08090a;
+      --card: #111214;
+      --card2: #161819;
+      --border: rgba(255,255,255,0.07);
+      --text: #f0f0f0;
+      --muted: #888;
+      --dim: #555;
+      --neon: #00ffcc;
+      --radius: 20px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', "Noto Sans TC", "Noto Sans KR", "Noto Sans JP", system-ui, sans-serif;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ===== LANG SWITCHER ===== */
+    .lang-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(8,9,10,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .lang-logo {
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, var(--orange), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .lang-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+    .lang-btn {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .lang-btn:hover { border-color: var(--orange); color: var(--orange); }
+    .lang-btn.active {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,69,0,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255,197,0,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 20% 60%, rgba(0,255,204,0.05) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,69,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,69,0,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 100%);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 860px; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,69,0,0.12);
+      border: 1px solid rgba(255,69,0,0.3);
+      color: var(--orange);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+    }
+    .hero-badge::before { content: '●'; font-size: 0.5rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 12px;
+    }
+    .hero h1 .brand {
+      background: linear-gradient(135deg, #FF4500, #ff8c00, #FFC500);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+    .hero-tagline {
+      font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 40px;
+      line-height: 1.4;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+    .btn-primary {
+      padding: 14px 32px;
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 0 30px rgba(255,69,0,0.35);
+      transition: all 0.2s;
+      font-family: inherit;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(255,69,0,0.5); }
+    .btn-ghost {
+      padding: 14px 32px;
+      background: transparent;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 50px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: #fff; background: rgba(255,255,255,0.05); }
+
+    /* ===== HERO IMAGE ===== */
+    .hero-image-wrap {
+      width: 100%;
+      max-width: 820px;
+      margin: 0 auto;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,69,0,0.1);
+      position: relative;
+    }
+    .hero-image-wrap img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    /* Fallback visual if no image */
+    .hero-visual {
+      width: 100%;
+      height: 380px;
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a0800 40%, #0d0d0d 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-visual::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(255,69,0,0.2), transparent 60%),
+                  radial-gradient(circle at 70% 50%, rgba(255,197,0,0.1), transparent 60%);
+    }
+    .hero-visual-inner { position: relative; z-index: 1; text-align: center; }
+    .forge-icon { font-size: 6rem; display: block; margin-bottom: 12px; }
+    .forge-text { font-size: 1.4rem; font-weight: 900; letter-spacing: 4px; background: linear-gradient(135deg, #FF4500, #FFC500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    /* ===== MAIN CONTENT ===== */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+    /* ===== SECTION ===== */
+    section { padding: 80px 0; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--orange);
+      margin-bottom: 16px;
+    }
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+    .lead {
+      font-size: 1.15rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    /* ===== DIVIDER ===== */
+    .divider { height: 1px; background: var(--border); margin: 0; }
+
+    /* ===== FEATURES ===== */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: rgba(255,69,0,0.3); transform: translateY(-3px); }
+    .feature-icon { font-size: 2rem; margin-bottom: 16px; }
+    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+    /* ===== QUOTE ===== */
+    .quote-block {
+      background: linear-gradient(135deg, rgba(255,69,0,0.06), rgba(255,197,0,0.04));
+      border: 1px solid rgba(255,69,0,0.2);
+      border-left: 4px solid var(--orange);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 32px 36px;
+      margin: 48px 0;
+    }
+    .quote-text { font-size: 1.2rem; font-style: italic; line-height: 1.7; color: var(--text); margin-bottom: 16px; }
+    .quote-author { font-size: 0.88rem; color: var(--muted); font-weight: 600; }
+
+    /* ===== PROBLEM/SOLUTION ===== */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .split-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+    .split-card.problem { border-top: 3px solid #ff4444; }
+    .split-card.solution { border-top: 3px solid var(--neon); }
+    .split-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+    .split-card.problem h3 { color: #ff6666; }
+    .split-card.solution h3 { color: var(--neon); }
+    .split-card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .split-card li { font-size: 0.9rem; color: var(--muted); padding-left: 20px; position: relative; }
+    .split-card.problem li::before { content: '✗'; position: absolute; left: 0; color: #ff6666; font-weight: 700; }
+    .split-card.solution li::before { content: '✓'; position: absolute; left: 0; color: var(--neon); font-weight: 700; }
+
+    /* ===== V2 TEASER ===== */
+    .v2-block {
+      background: linear-gradient(135deg, #0a0a0f, #12001a);
+      border: 1px solid rgba(150,0,255,0.2);
+      border-radius: var(--radius);
+      padding: 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .v2-block::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(150,0,255,0.1), transparent 70%);
+    }
+    .v2-block h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 12px; position: relative; }
+    .v2-block p { color: var(--muted); position: relative; font-size: 0.95rem; }
+    .v2-badge {
+      display: inline-block;
+      background: rgba(150,0,255,0.15);
+      border: 1px solid rgba(150,0,255,0.3);
+      color: #c084fc;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    /* ===== ABOUT ===== */
+    .about-card {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+    .about-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .about-info h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+    .about-info p { font-size: 0.88rem; color: var(--muted); }
+    .about-info a { color: var(--orange); text-decoration: none; font-weight: 600; }
+    .about-info a:hover { text-decoration: underline; }
+
+    /* ===== TAGS ===== */
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
+    .tag {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--dim);
+      font-size: 0.78rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--dim);
+      font-size: 0.82rem;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--orange); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      .hero { min-height: 80vh; padding: 60px 20px 40px; }
+      .split { grid-template-columns: 1fr; }
+      .about-card { flex-direction: column; text-align: center; }
+      .lang-bar { padding: 10px 16px; }
+      section { padding: 56px 0; }
+      .v2-block { padding: 32px 24px; }
+    }
+
+    /* ===== LANG CONTENT ===== */
+    [data-lang] { display: none; }
+    [data-lang].active { display: block; }
+    .inline-lang { display: none; }
+    .inline-lang.active { display: inline; }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-content { animation: fadeUp 0.8s ease both; }
+    .hero-image-wrap { animation: fadeUp 0.8s ease 0.2s both; }
+  </style>
+</head>
+<body>
+
+<!-- Language Bar -->
+<nav class="lang-bar">
+  <div class="lang-logo">SOULFORGE</div>
+  <div class="lang-btns">
+    <button class="lang-btn active" onclick="setLang('tw')">🇹🇼 繁中</button>
+    <button class="lang-btn" onclick="setLang('cn')">🇨🇳 简中</button>
+    <button class="lang-btn" onclick="setLang('en')">🌍 EN</button>
+    <button class="lang-btn" onclick="setLang('kr')">🇰🇷 한국어</button>
+    <button class="lang-btn" onclick="setLang('jp')">🇯🇵 日本語</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span data-lang="tw active">新聞稿 · 2026 年 3 月 22 日</span>
+      <span data-lang="cn">新闻稿 · 2026年3月22日</span>
+      <span data-lang="en">Press Release · March 22, 2026</span>
+      <span data-lang="kr">보도자료 · 2026년 3월 22일</span>
+      <span data-lang="jp">プレスリリース · 2026年3月22日</span>
+    </div>
+
+    <h1><span class="brand">SoulForge</span><br>
+      <span data-lang="tw active">正式上線</span>
+      <span data-lang="cn">正式上线</span>
+      <span data-lang="en">Is Here</span>
+      <span data-lang="kr">공식 출시</span>
+      <span data-lang="jp">正式リリース</span>
+    </h1>
+
+    <p class="hero-sub">
+      <span data-lang="tw active">無需安裝 · 零風險 · 三步驟打造你的專屬 AI 夥伴</span>
+      <span data-lang="cn">无需安装 · 零风险 · 三步打造你的专属 AI 伙伴</span>
+      <span data-lang="en">Zero Install · Zero Risk · Three Steps to Your Personal AI Partner</span>
+      <span data-lang="kr">설치 불필요 · 무위험 · 3단계로 나만의 AI 파트너 완성</span>
+      <span data-lang="jp">インストール不要 · ゼロリスク · 3ステップで専用AIパートナー構築</span>
+    </p>
+
+    <p class="hero-tagline">
+      <span data-lang="tw active">打開瀏覽器，讓 AI 從第一句話就認識你。</span>
+      <span data-lang="cn">打开浏览器，让 AI 从第一句话就认识你。</span>
+      <span data-lang="en">Open your browser. AI knows who you are from the very first message.</span>
+      <span data-lang="kr">브라우저를 열면, AI가 첫 번째 메시지부터 당신을 압니다.</span>
+      <span data-lang="jp">ブラウザを開くだけで、AIが最初のメッセージからあなたを理解します。</span>
+    </p>
+
+    <div class="hero-cta">
+      <a href="https://soulforge.markforged.tw" class="btn-primary" target="_blank">
+        <span data-lang="tw active">🔥 立即體驗</span>
+        <span data-lang="cn">🔥 立即体验</span>
+        <span data-lang="en">🔥 Try Now</span>
+        <span data-lang="kr">🔥 지금 체험</span>
+        <span data-lang="jp">🔥 今すぐ試す</span>
+      </a>
+      <a href="https://tw.linkedin.com/in/brian-chen-a007101a" class="btn-ghost" target="_blank">LinkedIn</a>
+    </div>
+
+    <div class="hero-image-wrap">
+      <div class="hero-visual">
+        <div class="hero-visual-inner">
+          <span class="forge-icon">⚒️</span>
+          <span class="forge-text">FORGE YOUR AI SOUL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Main Content -->
+<div class="container">
+
+  <!-- Background Section -->
+  <section>
+    <div class="section-label">
+      <span data-lang="tw active">背景</span><span data-lang="cn">背景</span><span data-lang="en">Background</span><span data-lang="kr">배경</span><span data-lang="jp">背景</span>
+    </div>
+    <h2>
+      <span data-lang="tw active">全世界都在聊 OpenClaw，<br>但現實是⋯⋯</span>
+      <span data-lang="cn">全世界都在聊 OpenClaw，<br>但现实是⋯⋯</span>
+      <span data-lang="en">The world talks about OpenClaw.<br>But the reality is⋯</span>
+      <span data-lang="kr">전 세계가 OpenClaw를 말하지만,<br>현실은⋯</span>
+      <span data-lang="jp">世界はOpenClawを語るが、<br>現実は⋯</span>
+    </h2>
+
+    <div class="split">
+      <div class="split-card problem">
+        <h3>
+          <span data-lang="tw active">❌ 現有解決方案的問題</span>
+          <span data-lang="cn">❌ 现有方案的问题</span>
+          <span data-lang="en">❌ The Problem</span>
+          <span data-lang="kr">❌ 기존 솔루션의 문제</span>
+          <span data-lang="jp">❌ 既存ソリューションの問題</span>
+        </h3>
+        <ul>
+          <li data-lang="tw active">需要部署代理框架與設定 LLM 模型</li>
+          <li data-lang="tw active">串接 Telegram、Signal 等通訊平台</li>
+          <li data-lang="tw active">頻繁爆發資料外洩與 prompt injection 資安事件</li>
+          <li data-lang="tw active">技術門檻極高，多數人望而卻步</li>
+          <li data-lang="cn">需要部署代理框架与配置 LLM 模型</li>
+          <li data-lang="cn">串接 Telegram、Signal 等通讯平台</li>
+          <li data-lang="cn">频发数据泄露与 prompt injection 安全事件</li>
+          <li data-lang="cn">技术门槛极高，大多数人望而却步</li>
+          <li data-lang="en">Deploy agent frameworks & configure LLMs</li>
+          <li data-lang="en">Wire up Telegram, Signal & messaging platforms</li>
+          <li data-lang="en">Recurring data exfiltration & prompt injection incidents</li>
+          <li data-lang="en">Prohibitively high technical barrier for most people</li>
+          <li data-lang="kr">에이전트 프레임워크 배포 및 LLM 모델 설정 필요</li>
+          <li data-lang="kr">Telegram, Signal 등 메시징 플랫폼 연동 필요</li>
+          <li data-lang="kr">잦은 데이터 유출 및 프롬프트 인젝션 보안 사고</li>
+          <li data-lang="kr">대부분의 사람들에게 너무 높은 기술 장벽</li>
+          <li data-lang="jp">エージェントフレームワークのデプロイとLLM設定が必要</li>
+          <li data-lang="jp">Telegram、Signalなどのメッセージングプラットフォーム連携</li>
+          <li data-lang="jp">データ漏洩とプロンプトインジェクション事件が頻発</li>
+          <li data-lang="jp">ほとんどの人には技術的障壁が高すぎる</li>
+        </ul>
+      </div>
+      <div class="split-card solution">
+        <h3>
+          <span data-lang="tw active">✅ SoulForge 的解法</span>
+          <span data-lang="cn">✅ SoulForge 的解法</span>
+          <span data-lang="en">✅ The SoulForge Way</span>
+          <span data-lang="kr">✅ SoulForge 솔루션</span>
+          <span data-lang="jp">✅ SoulForgeの解決策</span>
+        </h3>
+        <ul>
+          <li data-lang="tw active">純瀏覽器，零安裝、零設定</li>
+          <li data-lang="tw active">三步驟完成，任何人即開即用</li>
+          <li data-lang="tw active">所有運算在本地完成，不經過任何伺服器</li>
+          <li data-lang="tw active">完全開源、完全免費</li>
+          <li data-lang="cn">纯浏览器，零安装、零配置</li>
+          <li data-lang="cn">三步完成，任何人即开即用</li>
+          <li data-lang="cn">所有运算在本地完成，不经过任何服务器</li>
+          <li data-lang="cn">完全开源、完全免费</li>
+          <li data-lang="en">Pure browser — zero install, zero config</li>
+          <li data-lang="en">Three steps, ready for anyone instantly</li>
+          <li data-lang="en">All processing runs locally — no server involved</li>
+          <li data-lang="en">Fully open-source and completely free</li>
+          <li data-lang="kr">순수 브라우저 기반 - 설치 불필요, 설정 불필요</li>
+          <li data-lang="kr">3단계로 누구나 즉시 사용 가능</li>
+          <li data-lang="kr">모든 처리가 로컬에서 완료 - 서버 없음</li>
+          <li data-lang="kr">완전 오픈소스, 완전 무료</li>
+          <li data-lang="jp">純粋なブラウザ - インストール不要、設定不要</li>
+          <li data-lang="jp">3ステップで誰でもすぐに使用可能</li>
+          <li data-lang="jp">すべての処理がローカルで完結 - サーバー不要</li>
+          <li data-lang="jp">完全オープンソース、完全無料</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Quote -->
+  <div class="quote-block" style="margin-top: 64px;">
+    <p class="quote-text">
+      <span data-lang="tw active">「最簡單的方式，解決最核心的問題。打開瀏覽器，AI 就認識你了。」</span>
+      <span data-lang="cn">「用最简单的方式，解决最核心的问题。打开浏览器，AI 就认识你了。」</span>
+      <span data-lang="en">"Solve the most fundamental problem in the simplest way possible. Open your browser — AI already knows you."</span>
+      <span data-lang="kr">"가장 간단한 방법으로 가장 핵심적인 문제를 해결합니다. 브라우저를 열면 AI가 이미 당신을 압니다."</span>
+      <span data-lang="jp">「最もシンプルな方法で、最も本質的な問題を解決する。ブラウザを開けば、AIはすでにあなたを知っている。」</span>
+    </p>
+    <p class="quote-author">— Brian Chen, Country Manager, Greater China · Markforged</p>
+  </div>
+
+  <!-- Features -->
+  <section>
+    <div class="section-label">
+      <span data-lang="tw active">核心功能</span><span data-lang="cn">核心功能</span><span data-lang="en">Key Features</span><span data-lang="kr">핵심 기능</span><span data-lang="jp">主要機能</span>
+    </div>
+    <h2>
+      <span data-lang="tw active">七大特性，重新定義 AI 個人化</span>
+      <span data-lang="cn">七大特性，重新定义 AI 个性化</span>
+      <span data-lang="en">Seven Features, Redefining AI Personalization</span>
+      <span data-lang="kr">7가지 특성으로 AI 개인화를 재정의</span>
+      <span data-lang="jp">7つの特性でAIパーソナライゼーションを再定義</span>
+    </h2>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3 data-lang="tw active">零安裝、零註冊</h3>
+        <h3 data-lang="cn">零安装、零注册</h3>
+        <h3 data-lang="en">Zero Install, Zero Sign-Up</h3>
+        <h3 data-lang="kr">설치 불필요, 회원가입 불필요</h3>
+        <h3 data-lang="jp">インストール不要、登録不要</h3>
+        <p data-lang="tw active">純網頁操作，任何人開啟即用，無需 IT 核准。</p>
+        <p data-lang="cn">纯网页操作，任何人即开即用，无需 IT 审批。</p>
+        <p data-lang="en">Pure web-based, ready instantly — no IT approval needed.</p>
+        <p data-lang="kr">순수 웹 기반, 즉시 사용 가능 - IT 승인 불필요.</p>
+        <p data-lang="jp">純粋なウェブベース、即座に使用可能。IT承認不要。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3 data-lang="tw active">一鍵注入主流 AI 平台</h3>
+        <h3 data-lang="cn">一键注入主流 AI 平台</h3>
+        <h3 data-lang="en">One-Click AI Injection</h3>
+        <h3 data-lang="kr">원클릭 AI 플랫폼 주입</h3>
+        <h3 data-lang="jp">ワンクリックAI注入</h3>
+        <p data-lang="tw active">直接注入 Google AI 搜尋模式、ChatGPT、Grok。</p>
+        <p data-lang="cn">直接注入 Google AI 搜索模式、ChatGPT、Grok。</p>
+        <p data-lang="en">Inject into Google AI Search, ChatGPT, and Grok instantly.</p>
+        <p data-lang="kr">Google AI, ChatGPT, Grok에 즉시 주입.</p>
+        <p data-lang="jp">Google AI、ChatGPT、Grokに即座に注入。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3 data-lang="tw active">四維度人格建構</h3>
+        <h3 data-lang="cn">四维度人格构建</h3>
+        <h3 data-lang="en">Four-Dimension Persona Builder</h3>
+        <h3 data-lang="kr">4차원 페르소나 빌더</h3>
+        <h3 data-lang="jp">4次元ペルソナビルダー</h3>
+        <p data-lang="tw active">名稱、角色定位、個性特徵、公司與產品背景，打造完整 AI 靈魂。</p>
+        <p data-lang="cn">名称、角色定位、个性特征、公司与产品背景，打造完整 AI 灵魂。</p>
+        <p data-lang="en">Name, role, personality traits, and professional context — a complete AI soul.</p>
+        <p data-lang="kr">이름, 역할, 성격 특성, 전문적 맥락으로 완전한 AI 소울 구축.</p>
+        <p data-lang="jp">名前、役割、性格特性、専門的背景で完全なAIソウルを構築。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3 data-lang="tw active">絕對隱私保護</h3>
+        <h3 data-lang="cn">绝对隐私保护</h3>
+        <h3 data-lang="en">Absolute Privacy</h3>
+        <h3 data-lang="kr">절대적 프라이버시</h3>
+        <h3 data-lang="jp">絶対的プライバシー</h3>
+        <p data-lang="tw active">所有運算在瀏覽器端完成，不經過任何伺服器，關閉頁面即清除一切。</p>
+        <p data-lang="cn">所有运算在浏览器端完成，不经过任何服务器，关闭页面即清除一切。</p>
+        <p data-lang="en">All processing runs in-browser. No server. Closing the tab erases everything.</p>
+        <p data-lang="kr">모든 처리가 브라우저에서 실행. 서버 없음. 탭 닫으면 모든 것 삭제.</p>
+        <p data-lang="jp">すべての処理がブラウザ内で実行。サーバーなし。タブを閉じると消去。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💾</div>
+        <h3 data-lang="tw active">靈魂可攜帶</h3>
+        <h3 data-lang="cn">灵魂可携带</h3>
+        <h3 data-lang="en">Portable Soul</h3>
+        <h3 data-lang="kr">휴대 가능한 소울</h3>
+        <h3 data-lang="jp">ポータブルソウル</h3>
+        <p data-lang="tw active">匯出 .json 設定檔，隨時備份、跨裝置載入。</p>
+        <p data-lang="cn">导出 .json 配置文件，随时备份、跨设备载入。</p>
+        <p data-lang="en">Export as .json for backup and cross-device loading anytime.</p>
+        <p data-lang="kr">.json으로 내보내기, 언제든 백업 및 기기 간 로딩.</p>
+        <p data-lang="jp">.jsonとしてエクスポート、いつでもバックアップとクロスデバイス読み込み。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌏</div>
+        <h3 data-lang="tw active">五語系即時切換</h3>
+        <h3 data-lang="cn">五语系即时切换</h3>
+        <h3 data-lang="en">Five-Language Interface</h3>
+        <h3 data-lang="kr">5개 언어 실시간 전환</h3>
+        <h3 data-lang="jp">5言語リアルタイム切替</h3>
+        <p data-lang="tw active">繁中 / 简中 / English / 한국어 / 日本語 即時切換。</p>
+        <p data-lang="cn">繁中 / 简中 / English / 한국어 / 日本語 即时切换。</p>
+        <p data-lang="en">繁中 / 简中 / English / 한국어 / 日本語 real-time switching.</p>
+        <p data-lang="kr">繁中 / 简中 / English / 한국어 / 日本語 실시간 전환.</p>
+        <p data-lang="jp">繁中 / 简中 / English / 한국어 / 日本語 リアルタイム切替。</p>
+      </div>
+      <div class="feature-card" style="grid-column: 1/-1; background: linear-gradient(135deg, rgba(255,69,0,0.06), rgba(255,197,0,0.04)); border-color: rgba(255,69,0,0.2);">
+        <div class="feature-icon">🌐</div>
+        <h3 data-lang="tw active">完全開源、完全免費</h3>
+        <h3 data-lang="cn">完全开源、完全免费</h3>
+        <h3 data-lang="en">Fully Open-Source &amp; Free</h3>
+        <h3 data-lang="kr">완전 오픈소스 및 무료</h3>
+        <h3 data-lang="jp">完全オープンソース・完全無料</h3>
+        <p data-lang="tw active">無商業目的，純粹為 AI 普及而生。</p>
+        <p data-lang="cn">无商业目的，纯粹为 AI 普及而生。</p>
+        <p data-lang="en">No commercial agenda — built purely to democratize AI.</p>
+        <p data-lang="kr">상업적 목적 없음 - 순수하게 AI 민주화를 위해 제작.</p>
+        <p data-lang="jp">商業目的なし - 純粋にAIの民主化のために構築。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- V2 Teaser -->
+  <section>
+    <div class="v2-block">
+      <span class="v2-badge">Coming Soon</span>
+      <h3>
+        <span data-lang="tw active">SoulForge v2.0 正在路上 🚀</span>
+        <span data-lang="cn">SoulForge v2.0 即将到来 🚀</span>
+        <span data-lang="en">SoulForge v2.0 Is On Its Way 🚀</span>
+        <span data-lang="kr">SoulForge v2.0이 오고 있습니다 🚀</span>
+        <span data-lang="jp">SoulForge v2.0 が来る 🚀</span>
+      </h3>
+      <p data-lang="tw active">AI 靈魂與實體化 AI 解決方案的深度整合——讓你鍛造的靈魂不再只活在對話框裡，而是延伸到真實世界的工作場景。</p>
+      <p data-lang="cn">AI 灵魂与实体化 AI 解决方案的深度整合——让你锻造的灵魂不再只活在对话框里，而是延伸到真实世界的工作场景。</p>
+      <p data-lang="en">Deep integration between AI personas and embodied AI solutions — taking the soul you forged beyond the chat window and into real-world workflows.</p>
+      <p data-lang="kr">AI 페르소나와 구현된 AI 솔루션의 깊은 통합 - 당신이 단조한 소울을 채팅 창을 넘어 실제 업무 환경으로 확장합니다.</p>
+      <p data-lang="jp">AIペルソナとエンボディドAIソリューションの深い統合 - 鍛造したソウルをチャットウィンドウを超えて、リアルワールドのワークフローへ。</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- About -->
+  <section>
+    <div class="section-label">
+      <span data-lang="tw active">關於發布者</span><span data-lang="cn">关于发布者</span><span data-lang="en">About</span><span data-lang="kr">발행자 소개</span><span data-lang="jp">発行者について</span>
+    </div>
+    <div class="about-card">
+      <div class="about-avatar">👨‍💼</div>
+      <div class="about-info">
+        <h3>Brian Chen（陳中欣）</h3>
+        <p>Country Manager, Greater China Region · Markforged</p>
+        <p style="margin-top:8px;">
+          <a href="https://tw.linkedin.com/in/brian-chen-a007101a" target="_blank">🔗 LinkedIn</a>
+          &nbsp;·&nbsp;
+          <a href="https://soulforge.markforged.tw" target="_blank">🌐 soulforge.markforged.tw</a>
+          &nbsp;·&nbsp;
+          <a href="mailto:brian.chen@markforged.com">✉️ brian.chen@markforged.com</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tag">#SoulForge</span>
+      <span class="tag">#OpenClaw</span>
+      <span class="tag">#AI</span>
+      <span class="tag">#AIPersona</span>
+      <span class="tag">#ChatGPT</span>
+      <span class="tag">#GoogleAI</span>
+      <span class="tag">#Grok</span>
+      <span class="tag">#OpenSource</span>
+      <span class="tag">#Markforged</span>
+      <span class="tag">#EmbodiedAI</span>
+      <span class="tag">#PromptEngineering</span>
+      <span class="tag">#零安裝</span>
+      <span class="tag">#AI夥伴</span>
+    </div>
+  </section>
+
+</div><!-- /container -->
+
+<footer>
+  <p>© 2026 SoulForge · <a href="https://soulforge.markforged.tw" target="_blank">soulforge.markforged.tw</a> · Open Source · Free Forever</p>
+  <p style="margin-top:8px;">Powered by <a href="https://www.markforged.com" target="_blank">Markforged</a> · Built by Brian Chen</p>
+</footer>
+
+<script>
+  function setLang(lang) {
+    // Update buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    // Update all [data-lang] elements
+    document.querySelectorAll('[data-lang]').forEach(el => {
+      el.classList.remove('active');
+      const langs = el.getAttribute('data-lang').replace(' active','').split(' ');
+      if (langs.includes(lang)) el.classList.add('active');
+    });
+
+    // Update html lang attr
+    const langMap = { tw:'zh-TW', cn:'zh-CN', en:'en', kr:'ko', jp:'ja' };
+    document.documentElement.lang = langMap[lang] || 'zh-TW';
+  }
+
+  // Init: activate tw by default
+  document.querySelectorAll('[data-lang]').forEach(el => {
+    if (el.getAttribute('data-lang').includes('tw') || el.getAttribute('data-lang').includes('active')) {
+      el.classList.add('active');
+    }
+  });
+</script>
+</body>
+</html>
