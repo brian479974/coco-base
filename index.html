@@ -375,6 +375,7 @@
       </div>
 
       <div class="btn-group" style="margin-top: 12px;">
+        <button class="btn btn-launch" onclick="launchWithSoul('google')">&#x1F50D; 帶靈魂開啟 Google AI</button>
         <button class="btn btn-launch" onclick="launchWithSoul('gemini')">&#x1F680; 帶靈魂開啟 Gemini</button>
         <button class="btn btn-launch" onclick="launchWithSoul('chatgpt')">&#x1F30F; 帶靈魂開啟 ChatGPT</button>
         <button class="btn btn-launch" onclick="launchWithSoul('claude')">&#x2728; 帶靈魂開啟 Claude</button>
@@ -446,9 +447,17 @@
 
     // --- Launch with Soul ---
     const AI_URLS = {
+      google: null, // handled specially - direct URL with query
       gemini: 'https://gemini.google.com/app',
       chatgpt: 'https://chatgpt.com/',
       claude: 'https://claude.ai/new'
+    };
+
+    const AI_LABELS = {
+      google: 'Google AI',
+      gemini: 'Gemini',
+      chatgpt: 'ChatGPT',
+      claude: 'Claude'
     };
 
     function buildSoulPrompt() {
@@ -457,24 +466,40 @@
       return `以下是你的人設與靈魂記憶，請完整讀取後以此身份回應我：\n\n${soul}\n\n請用這個身份跟我打招呼，讓我知道你已經載入靈魂了！`;
     }
 
-    async function launchWithSoul(platform) {
-      const prompt = buildSoulPrompt();
+    function buildGoogleAIUrl(prompt) {
+      return `https://www.google.com/search?q=${encodeURIComponent(prompt)}&udm=50`;
+    }
+
+    async function copyToClipboard(text) {
       try {
-        await navigator.clipboard.writeText(prompt);
-        showToast(`靈魂提示詞已複製！正在開啟 ${platform}，貼上即可開始對話`);
+        await navigator.clipboard.writeText(text);
       } catch {
-        // Fallback for non-HTTPS or denied permission
         const ta = document.createElement('textarea');
-        ta.value = prompt;
+        ta.value = text;
         ta.style.position = 'fixed';
         ta.style.opacity = '0';
         document.body.appendChild(ta);
         ta.select();
         document.execCommand('copy');
         document.body.removeChild(ta);
-        showToast(`靈魂提示詞已複製！正在開啟 ${platform}，貼上即可`);
       }
-      setTimeout(() => window.open(AI_URLS[platform], '_blank'), 300);
+    }
+
+    async function launchWithSoul(platform) {
+      const prompt = buildSoulPrompt();
+      const label = AI_LABELS[platform];
+
+      if (platform === 'google') {
+        // Google AI Mode: query goes directly in URL
+        const url = buildGoogleAIUrl(prompt);
+        await copyToClipboard(prompt);
+        showToast(`靈魂已直接注入 Google AI 模式！`);
+        setTimeout(() => window.open(url, '_blank'), 300);
+      } else {
+        await copyToClipboard(prompt);
+        showToast(`靈魂提示詞已複製！正在開啟 ${label}，貼上即可`);
+        setTimeout(() => window.open(AI_URLS[platform], '_blank'), 300);
+      }
     }
 
     // --- Editor status updates ---
